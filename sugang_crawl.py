@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+CHROME_DRIVER_PATH = "./chromedriver"
 
 class GetCourseData:
 
@@ -16,7 +17,7 @@ class GetCourseData:
         # 창 숨기는 옵션 추가
         options.add_argument("headless")
 
-        self.driver = webdriver.Chrome("C:\chromedriver\chromedriver.exe", options=options)
+        self.driver = webdriver.Chrome(CHROME_DRIVER_PATH, options=options)
 
         self.driver.get('https://sugang.snu.ac.kr/')
         self.wait = WebDriverWait(self.driver, 10)
@@ -36,6 +37,9 @@ class GetCourseData:
                 self.course_data(course_id)
 
     def course_data(self, course_id: str):
+        pos = course_id.find('(')
+        keyword = course_id if pos == -1 else course_id[: pos]
+
         # search - In main page
         self.main_page()
 
@@ -49,7 +53,7 @@ class GetCourseData:
         # Send key and wait for search results
         content = self.wait.until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="hMobileTotalSearch"]')))
-        content.send_keys(f"{course_id}")
+        content.send_keys(f"{keyword}")
         content = self.wait.until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="HD100"]/div/div/div[1]/fieldset/div[3]/button[1]')))
         content.click()
@@ -69,10 +73,13 @@ class GetCourseData:
             idx = np.where(np.isin(data, "학점 "))[0][0]
             curr_num = int(data[idx - 2])
             max_num = int(data[idx - 1].split(sep=" ")[0])
-            if curr_num < max_num:
+            if curr_num < max_num and course_id in data[idx - 5]:
                 print("현재 시간 : ", datetime.now())
-                print(data[1], f"[{data[3]}]", f"[{data[4]}]", "인원 현황 : ", f"{data[idx - 2]}/{data[idx - 1]}")
+                for i in range(idx - 4):
+                    print(data[i], end = ' ')
+                print("인원 현황 : ", f"{data[idx - 2]}/{data[idx - 1]}")
                 print("수강신청 가능 - 잔여 여석 : ", f"{max_num - curr_num}")
+                print('\a')
 
 
 if __name__ == "__main__":
@@ -93,7 +100,6 @@ if __name__ == "__main__":
     app = GetCourseData()
     # "406.304", "4190.407", "4190.408", "430.329", "M0000.000500",
     # "M1522.000600", "M2177.003100", "M2177.004300", "M3244.000400"
+    # 분반 검색: "035.001(001)", "035.001(002)", etc
 
-    app.crawl_data("406.304", "4190.407", "4190.408", "430.329",
-                   "M0000.000500", "M1522.000600", "M2177.003100", "M2177.004300", "M3244.000400"
-                   )
+    app.crawl_data("035.001")
