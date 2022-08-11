@@ -86,8 +86,8 @@ if __name__ == "__main__":
     """
     HOW TO USE
     
-    1. Chrome driver 을 자신의 Chrome 버전과 동일하게 다운 받은 다음, "C:\chromedriver\chromedriver.exe" 에 저장
-     - 다운 url : https://chromedriver.chromium.org/downloads
+    1. Chrome driver 을 자신의 Chrome 버전과 동일하게 다운 받은 다음, 이 repo 안에 저장
+     - CHROME_DRIVER_PATH를 따로 변경해서 설정해도 됩니다.
     2. Import 에 필요한 package install
     3. app.crawl_data(*args) 함수의 *args 에 자신이 찾고자 하는 수업의 ID 값을 연속적으로 입력. - 아래 실행 예 참조
     
