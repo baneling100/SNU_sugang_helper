@@ -1,6 +1,5 @@
 from selenium import webdriver
 import numpy as np
-import time
 from subprocess import call
 
 from datetime import datetime
