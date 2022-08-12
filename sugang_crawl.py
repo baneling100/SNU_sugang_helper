@@ -1,5 +1,6 @@
 from selenium import webdriver
 import numpy as np
+import time
 from subprocess import call
 
 from datetime import datetime
@@ -81,6 +82,7 @@ class GetCourseData:
                 print("인원 현황 : ", f"{data[idx - 2]}/{data[idx - 1]}")
                 print("수강신청 가능 - 잔여 여석 : ", f"{max_num - curr_num}")
                 call(['mpg123', '-q', 'alarm.mp3'])
+                time.sleep(1)
 
 
 if __name__ == "__main__":
@@ -103,4 +105,4 @@ if __name__ == "__main__":
     # "M1522.000600", "M2177.003100", "M2177.004300", "M3244.000400"
     # 분반 검색: "035.001(001)", "035.001(002)", etc
 
-    app.crawl_data("045.012(002)")
+    app.crawl_data("045.012(005)")
