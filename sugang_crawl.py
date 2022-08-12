@@ -82,7 +82,7 @@ class GetCourseData:
                 print("인원 현황 : ", f"{data[idx - 2]}/{data[idx - 1]}")
                 print("수강신청 가능 - 잔여 여석 : ", f"{max_num - curr_num}")
                 call(['mpg123', '-q', 'alarm.mp3'])
-                time.sleep(1)
+        time.sleep(3)
 
 
 if __name__ == "__main__":
