@@ -6,13 +6,13 @@
 ## 실행시 모습
 ![Image1](./sample.JPG)
 
-## 사용 설명 추가 (08/19/2021)
+## 사용 설명 추가 (08/12/2022)
 * Woohyeon Baek (whnbaek@gmail.com)에 의해 수정
 
 1. Linux 환경에서 Chrome 설치 (stable version)
 ```
 $ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-$ sudo apt install ./google-chrome-stable_current_amd64.deb
+$ sudo apt install -y ./google-chrome-stable_current_amd64.deb
 ```
 2. Chrome 버전 확인
 ```
@@ -20,7 +20,13 @@ $ google-chrome --version
 Google Chrome 92.0.4515.159
 ```
 
-이하 설명은 `sugang_crawl.py` 내 HOW TO USE에 적혀있음
+3. 필요한 패키지
+```
+$ sudo apt install -y mpg123    # alarm 실행을 위함
+$ pip install selenium, numpy   # 프로그램에 필요한 파이썬 패키지
+```
+
+이하 설명은 `sugang_crawl.py` 내 HOW TO USE에 적혀있음 (chromedriver 설정 유의)
 
 ## 수정사항 (08/19/2021)
 1. Chrome driver 경로 변경 가능 (CHROME_DRIVER_PATH에 올바른 경로를 넣으면 됨)
