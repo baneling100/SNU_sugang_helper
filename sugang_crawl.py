@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import numpy as np
 import time
 from subprocess import call
@@ -9,8 +11,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-CHROME_DRIVER_PATH = "./chromedriver"
-
 class GetCourseData:
 
     def __init__(self):
@@ -19,7 +19,7 @@ class GetCourseData:
         # 창 숨기는 옵션 추가
         options.add_argument("headless")
 
-        self.driver = webdriver.Chrome(CHROME_DRIVER_PATH, options=options)
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
         self.driver.get('https://sugang.snu.ac.kr/')
         self.wait = WebDriverWait(self.driver, 10)
@@ -81,20 +81,16 @@ class GetCourseData:
                     print(data[i], end = ' ')
                 print("인원 현황 : ", f"{data[idx - 2]}/{data[idx - 1]}")
                 print("수강신청 가능 - 잔여 여석 : ", f"{max_num - curr_num}")
-                call(['mpg123', '-q', 'alarm.mp3'])
+                call(['ffplay', 'alarm.mp3', '-t', '0.9', '-autoexit', '-nodisp', '-hide_banner', '-loglevel', 'error'])
         time.sleep(3)
 
 
 if __name__ == "__main__":
     """
     HOW TO USE
+    app.crawl_data(*args) 함수의 *args 에 자신이 찾고자 하는 수업의 ID 값을 연속적으로 입력.
+    ex) app.crawl_data("406.304", "4190.407", "4190.408", "430.329")
     
-    1. Chrome driver 을 자신의 Chrome 버전과 동일하게 다운 받은 다음, 이 repo 안에 저장
-     - CHROME_DRIVER_PATH를 따로 변경해서 설정해도 됩니다.
-    2. Import 에 필요한 package install
-    3. app.crawl_data(*args) 함수의 *args 에 자신이 찾고자 하는 수업의 ID 값을 연속적으로 입력. - 아래 실행 예 참조
-    
-    * 대부분의 오류는 chrome 드라이버의 위치 및 버전에서 가장 많이 일어납니다.
     ※ 서버 자체에 트래픽이 과다해지는 경우 오류가 발생할 수 있습니다.
     ※ 그럴경우 self.wait 의 변수 10초를 더욱 증가시켜 해결될 수 있으나(20, 30 등), 
       오류가 발생하지 않으리라고는 보장할 수 없습니다.
